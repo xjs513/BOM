@@ -1,0 +1,35 @@
+.header{
+    height:40px;
+    background: #cbd6e8;
+    padding:10px;
+    line-height: 40px;
+    overflow:hidden;
+    margin:0px;
+    padding: 0 0 0 35px;
+    font-size:20px;
+    font-family: 'Helvetica Neue',Helvetica,Tahoma,Arial,'Microsoft Yahei','PingFang SC','Hiragino Sans GB','WenQuanYi Micro Hei',sans-serif;color: blue;
+}
+.header-right{
+    height:40px;
+    background: #cbd6e8;
+    float:right;
+    padding:10px;
+    line-height: 40px;
+    overflow:hidden;
+    margin:0px;
+    padding: 0 35px 0 0;
+    font-size:20px;
+    font-family: 'Helvetica Neue',Helvetica,Tahoma,Arial,'Microsoft Yahei','PingFang SC','Hiragino Sans GB','WenQuanYi Micro Hei',sans-serif;color: blue;
+}
+.footer p{
+    height:40px;
+    background:#cbd6e8;
+    line-height: 40px;
+    text-align: center;
+    padding:0px;
+    margin:0px;
+    overflow:hidden;
+}
+#main_div{
+    overflow: hidden;
+}

@@ -1,0 +1,18 @@
+<form id="update_form" method="post">
+    <input type="hidden" name="bom_id" value="{{ bom_product["bom_id"] }}" />
+    <div style="padding:7px 0 5px 50px;height:auto;">
+        物料名称:
+        <input class="easyui-textbox" style="width:180px" value="{{ bom_product["bom_name"] }}"
+             name="bom_name" required="true" missingMessage="用料名称-不能为空"/>
+	</div>
+    <div style="padding:7px 0 5px 50px;height:auto;">
+        物料编码:
+        <input class="easyui-textbox" style="width:180px" value="{{ bom_product["bom_code"] }}"
+             name="bom_code" required="true" missingMessage="用料编码-不能为空"/>
+	</div>
+    <div style="padding:7px 0 5px 50px;height:auto;">
+        工厂编码:
+        <input class="easyui-numberbox" style="width:180px" name="factory_code"
+           value="{{ bom_product["factory_code"] }}" required="true" missingMessage="非空数字"/>
+	</div>
+</form>

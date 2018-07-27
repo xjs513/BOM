@@ -1,0 +1,42 @@
+<form id="add_form" method="post">
+    <div style="padding:7px 0 5px 50px;height:auto;">
+        用料名称:
+        <input class="easyui-textbox" style="width:180px"
+             name="bom_name" required="true" missingMessage="用料名称-不能为空"/>
+	</div>
+    <div style="padding:7px 0 5px 50px;height:auto;">
+        用料编码:
+        <input class="easyui-textbox" style="width:180px"
+             name="bom_code" required="true" missingMessage="用料编码-不能为空"/>
+	</div>
+    <div style="padding:7px 0 5px 50px;height:auto;">
+        物资层次:
+        <SELECT NAME="bom_rate" class="easyui-combobox" style="width:180px">
+            {% for key,value in bom_rate_dict.items() %}
+                <option value="{{ value }}">{{ key }}</option>
+            {% endfor %}
+            {% for index in all_indices %}
+
+            {% endfor %}
+        </SELECT>
+	</div>
+    <div style="padding:7px 0 5px 50px;height:auto;">
+        物资单位:
+        <SELECT NAME="bom_unit" class="easyui-combobox" style="width:180px">
+            {% for bom_unit in bom_unit_list %}
+                <option value="{{ bom_unit }}">{{ bom_unit }}</option>
+            {% endfor %}
+        </SELECT>
+	</div>
+    <div style="padding:7px 0 5px 50px;height:auto;">
+        物资单价: <input class="easyui-numberbox" style="width:180px" data-options="min:0,precision:2"
+             name="bom_unit_price" required="true" missingMessage="物资单价-非空数字"/>
+	</div>
+    <div style="padding:7px 0 5px 50px;height:auto;">
+        物资来源:
+        <SELECT NAME="is_produce" class="easyui-combobox" style="width:180px">
+            <option value="1">自制</option>
+            <option value="0">外购</option>
+        </SELECT>
+	</div>
+</form>

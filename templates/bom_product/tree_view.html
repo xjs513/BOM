@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% include 'includes/css_js.html' %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='plugins/jsonview-1.2.0/jquery.jsonview.css')}}">
+    <script type="text/javascript" src="{{ url_for('static', filename='plugins/jsonview-1.2.0/jquery.jsonview.js')}}"></script>
+    <style>
+        body{
+            margin: 0;
+            padding:0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<div class="easyui-layout" fit="true">
+    <!-- 左侧区域 -->
+	<div data-options="region:'west',collapsible:false, split:false,title:'&nbsp;&nbsp;全部产品-树状视图'"
+		style="width:532px;padding:10px 0 0 10px;">
+        <ul id="tree_con"/>
+    </div>
+    <!-- 中部区域 -->
+	<div id="main_div" data-options="region:'center',title:'&nbsp;&nbsp;产品-物料-组件-子节点详情'"
+		style="padding:0px;">
+        <div id="node_detail_div" style="width:532px;padding:10px 0 0 10px;"/>
+    </div>
+</div>
+
+
+
+</body>
+<script>
+$(function(){
+    $('#tree_con').tree({
+		checkbox: false,
+        lines:true,
+		url: "{{ url_for( "bom_product_do.tree_data") }}",
+		parentField:"pid",
+		textFiled:"name",
+		idFiled:"id",
+        onClick: function (node) {
+            show_node_detail(node);
+        },
+	});
+});
+function show_node_detail(node) {
+    console.log(node)
+    /* JSONView第一个参数就是需要转换的json数据 */
+    var a = JSON.stringify(node);
+    $("#node_detail_div").JSONView(a, {collapsed: false, nl2br: true, recursive_collapser: true });
+}
+</script>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% include 'includes/css_js.html' %}
+    <style>
+        body{
+            margin: 0;
+            padding:0;
+            overflow: hidden;
+        }
+        #table_div{
+            width: 300px;
+        }
+        .pagination-info {
+            float: left;
+            margin: 0 6px;
+            padding: 0;
+            height: 30px;
+            line-height: 30px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+<input type="hidden" id="bom_code_g">
+<div class="easyui-layout" fit="true">
+    <!-- 左侧区域 -->
+	<div data-options="region:'west',collapsible:false, split:false,title:'&nbsp;&nbsp;物料产品-产出列表'"
+		style="width:532px;padding:0;">
+        <table id="table_div" style="width:530px;"></table>
+        <div id="pager_div" style="background:#efefef;border:1px solid #ccc;width:524px;"></div>
+        <div id="operate_div"></div>
+        <div id="toolbar_div" style="padding:7px 0 5px 50px;height:auto;">
+            物料名称: <input class="easyui-textbox" style="width:200px" id="bom_name"/>
+            <div style="margin: 5px 0 5px 0">
+            物料编码: <input class="easyui-textbox" style="width:200px" id="bom_code"/></div>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="false" onclick="refresh_page(default_page_number, default_page_size)">查询&nbsp;&nbsp;</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="false" onclick="add_function()">添加</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="update_function()">编辑</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="false" onclick="del_function()">删除</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="false" onclick="calculate_cost_function()">成本计算</a>
+        </div>
+    </div>
+    <!-- 中部区域 -->
+	<div id="main_div" data-options="region:'center',title:'&nbsp;&nbsp;物料产品-组成列表'"
+		style="padding:0px;">
+        <div id="p" style="padding:0;">
+            <table id="composite_table_div"></table>
+            <div id="composite_pager_div" style="background:#efefef;border:1px solid #ccc;"></div>
+            <div id="composite_operate_div"></div>
+            <div id="composite_toolbar_div" style="padding:7px 0 5px 50px;height:auto;">
+                组件名称: <input class="easyui-textbox" style="width:200px" id="com_name"/>
+                <div style="margin: 5px 0 5px 0">
+                组件编码:<input class="easyui-textbox" style="width:200px" id="com_code"/></div>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="false" onclick="composite_refresh_page(default_page_number, default_page_size)">查询&nbsp;&nbsp;</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="false" onclick="composite_add_function()">添加</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="composite_update_function()">编辑</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="false" onclick="composite_del_function()">删除</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="{{ url_for('static', filename='js/bom_product.js')}}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/bom_composite.js')}}"></script>
+<script>
+var urls = {
+    get_page:'{{ url_for( "bom_product_do.get_page")}}',
+    pre_add:'{{ url_for( "bom_product_do.pre_add")}}',
+    add:'{{ url_for( "bom_product_do.add")}}',
+    delete:'{{ url_for( "bom_product_do.delete")}}',
+    pre_update:'{{ url_for( "bom_product_do.pre_update")}}',
+    update:'{{ url_for( "bom_product_do.update")}}',
+    calculate_cost:'{{ url_for( "bom_product_do.calculate_cost")}}',
+    composite_get_page:'{{ url_for( "bom_composite_do.get_page")}}',
+    composite_pre_add:'{{ url_for( "bom_composite_do.pre_add")}}',
+    composite_add:'{{ url_for( "bom_composite_do.add")}}',
+    composite_delete:'{{ url_for( "bom_composite_do.delete")}}',
+    composite_pre_update:'{{ url_for( "bom_composite_do.pre_update")}}',
+    composite_update:'{{ url_for( "bom_composite_do.update")}}',
+    get_composite_by_rate:'{{ url_for( "bom_input_do.get_by_rate")}}',
+    get_rate_s:'{{ url_for( "bom_input_do.get_rate_s")}}',
+    get_by_code:'{{ url_for( "bom_input_do.get_by_code")}}'
+};
+$('#p').panel({
+    width:'100%',
+    height:'100%',
+    title:'未选中物料产品',
+});
+refresh_page(default_page_number, default_page_size);
+</script>
+</html>

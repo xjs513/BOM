@@ -1,0 +1,109 @@
+<form id="composite_update_form" method="post">
+    <div style="padding:7px 0 5px 50px;height:auto;">
+        名称:<font color="red"> [{{ bom_composite["bom_name"] }}]</font>,
+        编码:<font color="red">[{{ bom_composite["bom_code"] }}]</font>,
+        工厂:<font color="red">[{{ bom_composite["factory_code"] }}]</font>
+    </div>
+    <input type="hidden" name="composite_id" value="{{ bom_composite["id"] }}">
+    <input type="hidden" name="bom_name" value="{{ bom_composite["bom_name"] }}">
+    <input type="hidden" name="bom_code" value="{{ bom_composite["bom_code"] }}">
+    <input type="hidden" name="factory_code" value="{{ bom_composite["factory_code"] }}">
+    <hr/>
+    <div style="padding:7px 0 5px 50px;height:auto;">
+        选择层次:
+        <SELECT id="com_rate_update" name="com_rate_update" class="easyui-combobox" style="width:180px">
+            {% with foos = [1, 2, 3] %}
+                {% for foo in foos %}
+                    {% if bom_composite["com_rate"] ==foo %}
+                        <option value="{{ foo }}" selected>{{ foo }}</option>
+                    {% else  %}
+                        <option value="{{ foo }}">{{ foo }}</option>
+                    {% endif %}
+                {% endfor %}
+            {% endwith %}
+        </SELECT>
+    </div>
+    <div style="padding:7px 0 5px 50px;height:auto;">
+        选择组件:
+        <SELECT id="com_code_update" name="com_code_update" class="easyui-combobox" style="width:180px"
+                data-options="valueField:'id', textField:'text', panelHeight:'auto', editable:false">
+        </SELECT>
+    </div>
+    <hr/>
+    <div style="padding:7px 0 5px 50px;height:auto;">
+        组件名称:
+        <input class="easyui-textbox" style="width:180px"
+             id="com_name_update_form" name="com_name_update_form" />
+	</div>
+    <div style="padding:7px 0 5px 50px;height:auto;">
+        组件单位: <input class="easyui-textbox" style="width:180px"
+             id="com_unit_update_form" name="com_unit_update_form" />
+	</div>
+    <div style="padding:7px 0 5px 50px;height:auto;">
+        组件单价: <input class="easyui-numberbox" style="width:180px" data-options="min:0,precision:2"
+             id="com_unit_price_update_form" name="com_unit_price_update_form" />
+	</div>
+    <hr/>
+    <div style="padding:7px 0 5px 50px;height:auto;">
+        组件数量:
+        <input class="easyui-numberbox" style="width:180px" data-options="min:0,precision:2"
+             id="com_cnt_update_form" name="com_cnt_update_form"
+             required="true" missingMessage="物资单价-非空数字" value="{{ bom_composite["com_cnt"] }}"/>
+	</div>
+</form>
+<script>
+    $("#com_rate_update").combobox({
+        onSelect: function (opt) {
+            fill_com_code(opt.value);
+        }
+    });
+
+    function fill_com_code(com_rate){
+        $.ajax({ // Ajax调用处理
+           type: "POST",
+           url: urls.get_composite_by_rate,
+           data: {"bom_rate":com_rate},
+           dataType: "json",
+           success: function(json_data){
+               $('#com_code_add').empty();
+               var data = [];
+               var first_id ;
+               $(json_data).each(function(i, e){
+                   data.push({ "text": e.bom_name, "id": e.bom_code });
+                   if(i ===0){
+                       first_id = e.bom_code ;
+                   }
+               }); // end of $(json_data).each(function(i, e){
+               $("#com_code_update").combobox("loadData", data);
+               $("#com_code_update").combobox("select", "{{ bom_composite["com_code"] }}");
+           } // end of success: function(data){
+        }); // end of $.ajax({
+    }; // end of function fill_com_code(com_rate){
+
+    $("#com_code_update").combobox({
+        onSelect: function (opt) {
+            fill_com_info(opt.id);
+        }
+    });
+    function fill_com_info(bom_code){
+        $.ajax({ // Ajax调用处理
+           type: "POST",
+           url: urls.get_by_code,
+           data: {"bom_code":bom_code},
+           dataType: "json",
+           success: function(json_data){
+               json_data = json_data[0];
+               //设置输入框的值
+               $("#com_name_update_form").textbox('setValue',json_data.bom_name);
+               $("#com_code_update_form").textbox('setValue',json_data.bom_code);
+
+               $("#com_unit_update_form").textbox('setValue',json_data.bom_unit);
+               $("#com_unit_price_update_form").textbox('setValue',json_data.bom_unit_price);
+
+               $("#com_rate_update_form").textbox('setValue',json_data.bom_rate);
+
+           } // end of success: function(data){
+        }); // end of $.ajax({
+    }; // end of function fill_com_code(com_rate){
+
+</script>

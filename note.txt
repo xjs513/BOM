@@ -1,0 +1,43 @@
+具体指财务部门根据BOM中每个自制件或外购件的成本来确定最终产品的成本。
+物料清单（Bill of Materials，简称BOM）是描述企业产品组成的技术文件。
+在加工资本式行业，它表明了产品的总装件、分装件、组件、部件、零件、直到原材料之间的结构关系，以及所需的数量。
+BOM 是制造企业的核心文件，各个不同的部门和系统都要用到BOM，从BOM 中获取特定的数据。
+设计部门是BOM 的设计者，也是BOM 的使用者， 需要从BOM 中获取所有零件的信息以及相互间的结构信息；
+工艺部门根据BOM 建立各零件的制造工艺和装配件的装配工艺，以及加工制造过程中应使用的工装、模具等；
+生产部门根据BOM 来生产产品；
+库房根据BOM 进行发料；
+财务部门根据BOM中每个自制件或外购件的成本来确定最终产品的成本；
+质量控制部门要根据BOM 保证产品的正确生产；
+维修部门通过BOM 了解最终产品的具体结构，了解需要哪些备件等等。
+
+系统环境：
+Windows10 操作系统
+Python 2.7.13  IPython 5.5.0  Pip工具
+
+ 1. 安装python环境
+ 2. 配置国内pip源
+    windows下，直接在user目录中创建一个pip目录，再新建文件pip.ini。（例如：C:\Users\WQP\pip\pip.ini）内容：
+    [global]
+    index-url = http://mirrors.aliyun.com/pypi/simple/
+    [install]
+    trusted-host=mirrors.aliyun.com
+ 3. 更新pip
+    pip install --upgrade pip
+ 4. 安装 virtualenv
+    pip install virtualenv
+ 5. 安装虚拟目录：
+    进入到要创建虚拟环境的目录  运行：virtualenv virtualenv-name[bom] 完成虚拟环境的安装
+ 6. 激活虚拟环境 ：
+    Linux：           source  ./flask-env/bin/activate
+    Windows：     .\flask-env\Scripts\activate
+  7.安装工程运行环境：
+    pip install flask
+    pip install pypyodbc
+    pip install xlrd
+    pip install xlwt
+
+  8. 拷贝项目文件夹到虚拟目录下
+     执行：python BOM.py
+     浏览器访问：http://localhost:5000/
+
+     access 文件默认位置：DB_FILE_PATH = 'C:\\code\\bom.mdb'

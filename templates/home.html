@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>物料成本计算</title>
+    {% include 'includes/css_js.html' %}
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css')}}">
+</head>
+<body class="easyui-layout">
+    <!-- header -->
+	<div data-options="region:'north',border:false" class="header">
+        <span class="header-left">物料成本微后台</span>
+    </div>
+    <div id="operate_div"></div>
+    <!-- 左侧导航区域 -->
+	<div data-options="region:'west',collapsible:false, split:false,title:'&nbsp;&nbsp;导航栏'" style="width:202px;padding:0px;">
+        <div id="RightAccordion" style="width:200px;height:100%;">
+        </div>
+    </div>
+    <!-- 中部数据展示和工作区域区域 -->
+	<div data-options="region:'center',title:''" style="padding:0px;">
+        <div id="main_div" style="height:100%;">
+        </div>
+    </div>
+    <!-- footer -->
+	<div data-options="region:'south',border:false" class="footer">
+        <p>京ICP备14031733号-2 &nbsp;&nbsp;&nbsp;Copyright © 2005-2018 EventMosh</p>
+    </div>
+</body>
+<script>
+    var urls = {
+        menu_get_tree: '{{ url_for("menu.get_tree")}}'
+    };
+    $(function() {
+        // 初始化 accordion
+        $("#RightAccordion").accordion({
+            fillSpace: true,
+            fit: true,
+            border: false,
+            animate: false
+        });
+        // 初始化 tabs
+        $('#main_div').tabs({
+            border: false,
+            onSelect: function (title) {
+
+            }
+        });
+        // 异步请求后台数据
+        $.ajax({
+            type: "POST",
+            url: urls.menu_get_tree,
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                $(data).each(function (i, e) {
+                    $('#RightAccordion').accordion('add', {
+                        title: e.name,
+                        content: "<ul id='tree" + e.id + "'></ul>",
+                        selected: true,
+                        iconCls: e.icon_path
+                    });
+                    $("#tree" + e.id).tree({
+                        data: e.children,
+                        onClick: function (node) {
+                            if (node.url === "#") {
+                                return;
+                            }
+                            var tabTitle = node.name;
+                            var url = node.url;
+                            var icon = node.iconCls;
+                            addTab(tabTitle, url, icon);
+                        }
+                    });// end of $("#tree" + e.id).tree({
+                });// end of $(data).each(function(i, e){
+                // 展开第一个 Accordion
+                $("#RightAccordion").accordion("select", 0);
+                // 点击第一个有内容的子节点
+                var first_node = $($(".tree")[0]).tree('getRoot');
+                if(first_node.url === "#"){
+
+                }else{
+                    addTab(first_node.text, first_node.url, first_node.iconCls);
+                }
+            }// end of success: function(data){
+        });// end of $.ajax({
+
+
+        /**
+         * 在iFrame中打开一个新tab
+         * @param title
+         * @param href
+         */
+        function addTab(title, href, icon) {
+            var iframe_height = $("#main_div").outerHeight() - $("#main_div").children("div.tabs-header").outerHeight() - 3;
+            var e = $('#main_div').tabs('exists', title);
+            if (e) {
+                $("#main_div").tabs('select', title);
+                var tab = $("#main_div").tabs('getSelected');
+                $('#main_div').tabs('update', {
+                    tab: tab,
+                    options: {
+                        title: title,
+                        content: "<iframe src='" + href + "' style='width:100%;height:" + iframe_height + "px;overflow-x:hidden; overflow-y:hidden;border: 0px;'></iframe>",
+                        closable: true,
+                        selected: true
+                    }
+                });
+            } else {
+                $('#main_div').tabs('add', {
+                    title: title,
+                    content: "<iframe src='" + href + "' style='width:100%;height:" + iframe_height + "px;overflow-x:hidden; overflow-y:hidden;border: 0px;'></iframe>",
+                    iconCls: '',
+                    closable: true
+                });
+            }
+        }
+    })
+</script>
+</html>

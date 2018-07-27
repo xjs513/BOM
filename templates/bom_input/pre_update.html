@@ -1,0 +1,56 @@
+<form id="update_form" method="post">
+    <input type="hidden" name="bom_id" value="{{ base_bom["bom_id"] }}" />
+    <div style="padding:7px 0 5px 50px;height:auto;">
+        用料名称:
+        <input class="easyui-textbox" style="width:180px" value="{{ base_bom["bom_name"] }}"
+             name="bom_name" required="true" missingMessage="用料名称-不能为空"/>
+	</div>
+    <div style="padding:7px 0 5px 50px;height:auto;">
+        用料编码:
+        <input class="easyui-textbox" style="width:180px" value="{{ base_bom["bom_code"] }}"
+             name="bom_code" required="true" missingMessage="用料编码-不能为空"/>
+	</div>
+    <div style="padding:7px 0 5px 50px;height:auto;">
+        物资层次:
+        <SELECT NAME="bom_rate" class="easyui-combobox" style="width:180px">
+            {% for key,value in bom_rate_dict.items() %}
+                {% if base_bom["bom_rate"] == value %}
+                    <option value="{{ value }}" selected>{{ key }}</option>
+                {% else  %}
+                    <option value="{{ value }}">{{ key }}</option>
+                {% endif %}
+            {% endfor %}
+        </SELECT>
+	</div>
+    <div style="padding:7px 0 5px 50px;height:auto;">
+        物资单位:
+        <SELECT NAME="bom_unit" class="easyui-combobox" style="width:180px">
+            {% for bom_unit in bom_unit_list %}
+                {% if base_bom["bom_unit"] == bom_unit %}
+                    <option value="{{ bom_unit }}" selected>{{ bom_unit }}</option>
+                {% else  %}
+                    <option value="{{ bom_unit }}">{{ bom_unit }}</option>
+                {% endif %}
+            {% endfor %}
+        </SELECT>
+	</div>
+    <div style="padding:7px 0 5px 50px;height:auto;">
+        物资单价: <input class="easyui-numberbox" style="width:180px" value="{{ base_bom["bom_unit_price"] }}"
+             data-options="min:0,precision:2" name="bom_unit_price"
+             required="true" missingMessage="物资单价-非空数字"/>
+	</div>
+    <div style="padding:7px 0 5px 50px;height:auto;">
+        物资来源:
+        <SELECT NAME="is_produce" class="easyui-combobox" style="width:180px">
+            {% with foos = [1, 0] %}
+                {% for foo in foos %}
+                    {% if base_bom["is_produce"] == foo %}
+                        <option value="{{ foo }}" selected>{{ "自制" if(foo == 1) else "外购" }}</option>
+                    {% else  %}
+                        <option value="{{ foo }}">{{ "自制" if(foo == 1) else "外购" }}</option>
+                    {% endif %}
+                {% endfor %}
+            {% endwith %}
+        </SELECT>
+	</div>
+</form>
